@@ -7,13 +7,7 @@
     "prettier",
     "plugin:react/jsx-runtime"
   ],
-  "plugins": [
-    "react",
-    "react-hooks",
-    "@typescript-eslint",
-    "import",
-    "simple-import-sort"
-  ],
+  "plugins": ["react", "react-hooks", "@typescript-eslint", "import", "simple-import-sort"],
   "rules": {
     "react/react-in-jsx-scope": "off",
     "react/function-component-definition": [2, { "namedComponents": "function-declaration" }],

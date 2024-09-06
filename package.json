@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "format": "prettier --cache --write .",
+    "lint": "next lint --cache",
+    "tsc": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
     "next": "14.2.8",
