@@ -1,0 +1,56 @@
+@mixin flex-c($direction: row, $justify: center, $align: center) {
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  flex-direction: $direction;
+  justify-content: $justify;
+  align-items: $align;
+}
+
+.flex {
+  display: flex;
+
+  &.row {
+    flex-direction: row;
+  }
+  &.column {
+    flex-direction: column;
+  }
+
+  &.justify-flex-start {
+    justify-content: flex-start;
+  }
+  &.justify-center {
+    justify-content: center;
+  }
+  &.justify-flex-end {
+    justify-content: flex-end;
+  }
+  &.justify-space-between {
+    justify-content: space-between;
+  }
+  &.justify-space-around {
+    justify-content: space-around;
+  }
+  &.align-flex-start {
+    align-items: flex-start;
+  }
+  &.align-center {
+    align-items: center;
+  }
+  &.align-flex-end {
+    align-items: flex-end;
+  }
+
+  &.no-shrink {
+    flex-shrink: 0;
+  }
+  &.no-grow {
+    flex-grow: 0;
+  }
+  &.grow {
+    flex-grow: 1;
+  }
+}
