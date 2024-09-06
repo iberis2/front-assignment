@@ -1,6 +1,6 @@
 @use '../../../../styles/colors' as c;
 
-@mixin button-color($color:c.$gray-900) {
+@mixin button-color($color: c.$gray-900) {
   background: $color;
   &:hover {
     background: lighten($color, 10%);
@@ -9,7 +9,7 @@
     background: darken($color, 10%);
   }
   &:disabled {
-    background:c.$gray-300;
+    background: c.$gray-300;
   }
 }
 
@@ -39,7 +39,7 @@
   }
 
   &.default {
-    @include button-color
+    @include button-color;
   }
 
   &.success {
