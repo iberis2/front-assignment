@@ -1,0 +1,8 @@
+@use '../../../../styles/media' as m;
+
+.button {
+  @media #{m.$mobile} {
+    width: 5rem !important;
+    font-size: 1.2rem;
+  }
+}

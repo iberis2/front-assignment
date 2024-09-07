@@ -59,7 +59,7 @@ export default function TodoItem(todoItemProps: TodoResponse) {
   return <TodoItemView {...props} />;
 }
 
-function TodoItemView({
+export function TodoItemView({
   id,
   title,
   content,

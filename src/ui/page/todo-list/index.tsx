@@ -9,6 +9,7 @@ import { CreateDialog } from '../../container/create-update-dialog';
 import TodoItem from '../../container/todo-item';
 import S from './styles.module.scss';
 import { useGetTodoList } from '@/src/remotes/todo/quries';
+import Link from 'next/link';
 
 export default function TodoList() {
   const { data: todoList } = useGetTodoList();
@@ -21,7 +22,11 @@ export default function TodoList() {
         추가하기
       </Button>
       <div className={S['todo-list']}>
-        {todoList?.map(todo => <TodoItem key={todo?.id} {...todo} />)}
+        {todoList?.map(todo => (
+          <Link href={`/todo-list/${todo.id}`} key={todo?.id}>
+            <TodoItem {...todo} />
+          </Link>
+        ))}
       </div>
 
       <CreateDialog open={createDialog.value} onClose={createDialog.onFalse} title='할일 추가' />
