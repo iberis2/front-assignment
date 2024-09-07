@@ -1,3 +1,4 @@
+import QueryClientProvider from '@/src/remotes/QueryClientProvider';
 import '../styles/globals.scss';
 import S from './styles.module.scss';
 
@@ -16,8 +17,10 @@ export default function RootLayout({
   return (
     <html lang='ko'>
       <body className={S.container}>
-        {children}
-        <div id='portal' />
+        <QueryClientProvider>
+          {children}
+          <div id='portal' />
+        </QueryClientProvider>
       </body>
     </html>
   );
