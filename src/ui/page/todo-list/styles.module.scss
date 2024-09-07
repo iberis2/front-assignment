@@ -1,7 +1,18 @@
 @use '../../../../styles/colors' as c;
+@use '../../../../styles/media' as m;
 
 .button {
   &-create {
     align-self: flex-end;
+  }
+}
+
+.todo-list {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+
+  @media #{m.$mobile} {
+    grid-template-columns: 1fr;
   }
 }

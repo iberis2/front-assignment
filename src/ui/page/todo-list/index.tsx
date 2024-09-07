@@ -20,7 +20,9 @@ export default function TodoList() {
       <Button onClick={createDialog.onTrue} color='info' size='s' className={S['button-create']}>
         추가하기
       </Button>
-      {todoList?.map(todo => <TodoItem key={todo?.id} {...todo} />)}
+      <div className={S['todo-list']}>
+        {todoList?.map(todo => <TodoItem key={todo?.id} {...todo} />)}
+      </div>
 
       <CreateDialog open={createDialog.value} onClose={createDialog.onFalse} title='할일 추가' />
     </Flex>

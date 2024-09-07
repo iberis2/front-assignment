@@ -81,10 +81,10 @@ function TodoItemView({
             <Text typo='h3'>{title}</Text>
           </label>
           <div>
-            <Button onClick={updateDialog.onOpen} size='s' color='default'>
+            <Button onClick={updateDialog.onOpen} size='s' color='default' className={S.button}>
               수정하기
             </Button>
-            <Button onClick={deleteDialog.onOpen} size='s' color='error'>
+            <Button onClick={deleteDialog.onOpen} size='s' color='error' className={S.button}>
               삭제하기
             </Button>
           </div>
