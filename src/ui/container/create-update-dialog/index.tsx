@@ -7,6 +7,8 @@ import S from './styles.module.scss';
 import { useCreateTodo, useUpdateTodo } from '@/src/remotes/todo/mutation';
 import { SubmitHandler, useForm, UseFormReturn } from 'react-hook-form';
 import FormProvider from '../../component/hook-form/form-provider';
+import { useQueryClient } from '@tanstack/react-query';
+import { QUERY_KEYS } from '@/src/remotes/query-keys';
 
 type FormType = { title: string; content: string };
 
@@ -19,6 +21,7 @@ interface Props {
 }
 
 export function CreateDialog(dialogProps: Props) {
+  const query = useQueryClient();
   const { mutateAsync: createTodo } = useCreateTodo();
   const methods = useForm<FormType>();
 
@@ -26,6 +29,7 @@ export function CreateDialog(dialogProps: Props) {
     await createTodo(newTodo);
     dialogProps.onClose();
     methods.reset();
+    query.invalidateQueries({ queryKey: QUERY_KEYS.todoList });
   };
 
   return <CreateUpdateDialogView methods={methods} onConfirm={handleCreateTodo} {...dialogProps} />;
