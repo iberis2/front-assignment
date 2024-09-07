@@ -18,7 +18,7 @@ export default function TodoList() {
     <Flex direction='column' gap={8}>
       <Text typo='h1'>Todo List</Text>
       <Button onClick={createDialog.onTrue} color='info' size='s' className={S['button-create']}>
-        할 일 추가하기
+        추가하기
       </Button>
       {todoList?.map(todo => <TodoItem key={todo?.id} {...todo} />)}
 

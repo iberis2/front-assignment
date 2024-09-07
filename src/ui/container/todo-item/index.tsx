@@ -12,6 +12,7 @@ import { TodoResponse } from '@/src/remotes/todo/types';
 import { useDeleteTodo } from '@/src/remotes/todo/mutation';
 import { useQueryClient } from '@tanstack/react-query';
 import { QUERY_KEYS } from '@/src/remotes/query-keys';
+import { toast } from 'react-toastify';
 
 export default function TodoItem(todoItemProps: TodoResponse) {
   const query = useQueryClient();
@@ -20,9 +21,13 @@ export default function TodoItem(todoItemProps: TodoResponse) {
   const { mutateAsync: deleteTodo, isPending } = useDeleteTodo(todoItemProps.id);
 
   const handleDeleteTodo = async () => {
-    await deleteTodo();
+    try {
+      await deleteTodo();
+      query.invalidateQueries({ queryKey: QUERY_KEYS.todoList });
+    } catch (e) {
+      toast.error('삭제에 실패했습니다.');
+    }
     deleteDialog.onFalse();
-    query.invalidateQueries({ queryKey: QUERY_KEYS.todoList });
   };
 
   const props = {

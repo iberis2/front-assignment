@@ -11,6 +11,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import { QUERY_KEYS } from '@/src/remotes/query-keys';
 import ConfirmDialog from '../confirm-dialog';
 import { useBoolean } from '@/src/hooks/useBoolean';
+import { toast } from 'react-toastify';
 
 type FormType = { title: string; content: string };
 
@@ -29,10 +30,14 @@ export function CreateDialog(dialogProps: Props) {
   const methods = useForm<FormType>();
 
   const handleCreateTodo: SubmitHandler<FormType> = async newTodo => {
-    await createTodo(newTodo);
+    try {
+      await createTodo(newTodo);
+      query.invalidateQueries({ queryKey: QUERY_KEYS.todoList });
+    } catch (e) {
+      toast.error('생성에 실패했습니다.');
+    }
     dialogProps.onClose();
     methods.reset();
-    query.invalidateQueries({ queryKey: QUERY_KEYS.todoList });
   };
 
   return (
@@ -72,9 +77,13 @@ export function UpdateDialog({ id, todo, ...dialogProps }: Props & { id: string 
   };
 
   const handleUpdateTodo: SubmitHandler<FormType> = async newTodo => {
-    await updateTodo(newTodo);
+    try {
+      await updateTodo(newTodo);
+      query.invalidateQueries({ queryKey: QUERY_KEYS.todoList });
+    } catch (e) {
+      toast.error('수정에 실패했습니다.');
+    }
     dialogProps.onClose();
-    query.invalidateQueries({ queryKey: QUERY_KEYS.todoList });
   };
 
   return (
