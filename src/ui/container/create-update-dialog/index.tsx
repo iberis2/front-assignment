@@ -113,6 +113,8 @@ function CreateUpdateDialogView({
   methods,
   isLoading,
 }: Props & { methods: UseFormReturn<FormType, any, undefined>; isLoading?: boolean }) {
+  const disabledConfirm = methods.watch('title') === '' || methods.watch('content') === '';
+
   return (
     <Dialog open={open} onClose={onClose}>
       <FormProvider methods={methods} onSubmit={onConfirm}>
@@ -131,7 +133,7 @@ function CreateUpdateDialogView({
           <Button size='m' color='error' type='button' onClick={onClose}>
             취소
           </Button>
-          <Button size='m' type='submit' isLoading={isLoading}>
+          <Button size='m' type='submit' isLoading={isLoading} disabled={disabledConfirm}>
             확인
           </Button>
         </Dialog.Footer>
