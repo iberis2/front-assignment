@@ -13,7 +13,7 @@ export default function TodoList() {
   const createDialog = useBoolean(false);
 
   return (
-    <Flex direction='column' gap={8} className={S.container}>
+    <Flex direction='column' gap={8}>
       <Text typo='h1'>Todo List</Text>
       <Button onClick={createDialog.onTrue} color='info' size='s' className={S['button-create']}>
         할 일 추가하기

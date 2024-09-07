@@ -1,4 +1,5 @@
 import '../styles/globals.scss';
+import S from './styles.module.scss';
 
 import type { Metadata } from 'next';
 
@@ -14,7 +15,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang='ko'>
-      <body>
+      <body className={S.container}>
         {children}
         <div id='portal' />
       </body>
