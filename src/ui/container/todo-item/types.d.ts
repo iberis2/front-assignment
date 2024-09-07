@@ -1,6 +1,10 @@
-export interface TodoItemViewProps {
+export interface TodoItemProps {
   title?: string;
   content?: string;
+  completed?: boolean;
+}
+
+export interface TodoItemViewProps extends TodoItemProps {
   updateDialog: {
     open: boolean;
     onClose: () => void;
