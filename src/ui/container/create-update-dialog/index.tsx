@@ -9,11 +9,14 @@ import { SubmitHandler, useForm, UseFormReturn } from 'react-hook-form';
 import FormProvider from '../../component/hook-form/form-provider';
 import { useQueryClient } from '@tanstack/react-query';
 import { QUERY_KEYS } from '@/src/remotes/query-keys';
+import ConfirmDialog from '../confirm-dialog';
+import { useBoolean } from '@/src/hooks/useBoolean';
 
 type FormType = { title: string; content: string };
 
 interface Props {
   title: string;
+  todo?: { title?: string; content?: string };
   open: boolean;
   onOpen?: () => void;
   onConfirm?: SubmitHandler<FormType>;
@@ -34,17 +37,55 @@ export function CreateDialog(dialogProps: Props) {
 
   return <CreateUpdateDialogView methods={methods} onConfirm={handleCreateTodo} {...dialogProps} />;
 }
-export function UpdateDialog({ id, ...dialogProps }: Props & { id: string }) {
+export function UpdateDialog({ id, todo, ...dialogProps }: Props & { id: string }) {
+  const query = useQueryClient();
+  const confirmDialog = useBoolean(false);
   const { mutateAsync: updateTodo } = useUpdateTodo(id);
-  const methods = useForm<FormType>();
+  const methods = useForm<FormType>({
+    defaultValues: { title: todo?.title, content: todo?.content },
+  });
+
+  const handleCloseUpdateDialog = () => {
+    dialogProps.onClose();
+    if (methods.formState.isDirty) {
+      confirmDialog.onTrue();
+    } else {
+      dialogProps.onClose();
+    }
+  };
+
+  const handleCloseConfirmDialog = () => {
+    confirmDialog.onFalse();
+    dialogProps.onOpen?.();
+  };
+
+  const handleConfirmDialog = () => {
+    confirmDialog.onFalse();
+    methods.reset();
+  };
 
   const handleUpdateTodo: SubmitHandler<FormType> = async newTodo => {
     await updateTodo(newTodo);
     dialogProps.onClose();
-    methods.reset();
+    query.invalidateQueries({ queryKey: QUERY_KEYS.todoList });
   };
 
-  return <CreateUpdateDialogView methods={methods} onConfirm={handleUpdateTodo} {...dialogProps} />;
+  return (
+    <>
+      <CreateUpdateDialogView
+        methods={methods}
+        onConfirm={handleUpdateTodo}
+        {...dialogProps}
+        onClose={handleCloseUpdateDialog}
+      />
+      <ConfirmDialog
+        title='변경사항이 있습니다. 수정을 취소할까요?'
+        open={confirmDialog.value}
+        onClose={handleCloseConfirmDialog}
+        onConfirm={handleConfirmDialog}
+      />
+    </>
+  );
 }
 
 function CreateUpdateDialogView({

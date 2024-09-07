@@ -7,38 +7,19 @@ import Text from '../../component/text';
 import ConfirmDialog from '../confirm-dialog';
 import { UpdateDialog } from '../create-update-dialog';
 import S from './styles.module.scss';
-import { TodoItemProps, TodoItemViewProps } from './types';
+import { TodoItemViewProps } from './types';
+import { TodoResponse } from '@/src/remotes/todo/types';
 
-export default function TodoItem(todoItemProps: TodoItemProps) {
+export default function TodoItem(todoItemProps: TodoResponse) {
   const updateDialog = useBoolean(false);
   const deleteDialog = useBoolean(false);
-  const confirmDialog = useBoolean(false);
-
-  const handleUpdate = () => {
-    updateDialog.onFalse();
-  };
-
-  const handleOpenCancelUpdateDialog = () => {
-    updateDialog.onFalse();
-    confirmDialog.onTrue();
-  };
-
-  const handleCloseCancelUpdateDialog = () => {
-    confirmDialog.onFalse();
-    updateDialog.onTrue();
-  };
 
   const props = {
     ...todoItemProps,
     updateDialog: {
       open: updateDialog.value,
-      onClose: handleOpenCancelUpdateDialog,
-      onConfirm: handleUpdate,
-    },
-    confirmDialog: {
-      open: confirmDialog.value,
-      onClose: handleCloseCancelUpdateDialog,
-      onConfirm: confirmDialog.onFalse,
+      onClose: updateDialog.onFalse,
+      onOpen: updateDialog.onTrue,
     },
     deleteDialog: {
       open: deleteDialog.value,
@@ -53,11 +34,11 @@ export default function TodoItem(todoItemProps: TodoItemProps) {
 }
 
 function TodoItemView({
+  id,
   title,
   content,
   completed,
   updateDialog,
-  confirmDialog,
   deleteDialog,
   ...props
 }: TodoItemViewProps) {
@@ -81,8 +62,7 @@ function TodoItemView({
         <div className={S.divider} />
         <Text typo='b1'>{content}</Text>
       </div>
-      <UpdateDialog id={'1'} title='할일 수정' {...updateDialog} />
-      <ConfirmDialog title='변경사항이 있습니다. 수정을 취소할까요?' {...confirmDialog} />
+      <UpdateDialog id={id} title='할일 수정' todo={{ title, content }} {...updateDialog} />
       <ConfirmDialog title='todo를 삭제하시겠습니까?' {...deleteDialog} />
     </>
   );

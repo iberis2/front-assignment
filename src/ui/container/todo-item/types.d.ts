@@ -1,19 +1,10 @@
-export interface TodoItemProps {
-  title?: string;
-  content?: string;
-  completed?: boolean;
-}
+import { TodoResponse } from '@/src/remotes/todo/types';
 
-export interface TodoItemViewProps extends TodoItemProps {
+export interface TodoItemViewProps extends TodoResponse {
   updateDialog: {
     open: boolean;
     onClose: () => void;
-    onConfirm: () => void;
-  };
-  confirmDialog: {
-    open: boolean;
-    onClose: () => void;
-    onConfirm: () => void;
+    onOpen: () => void;
   };
   deleteDialog: {
     open: boolean;
