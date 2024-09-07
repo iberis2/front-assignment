@@ -8,7 +8,8 @@
     "start": "next start",
     "format": "prettier --cache --write .",
     "lint": "next lint --cache",
-    "tsc": "tsc -p tsconfig.json --noEmit"
+    "tsc": "tsc -p tsconfig.json --noEmit",
+    "prepare": "husky"
   },
   "dependencies": {
     "next": "14.2.8",
@@ -29,6 +30,7 @@
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-react": "^7.35.2",
     "eslint-plugin-simple-import-sort": "^12.1.1",
+    "husky": "^9.1.5",
     "postcss": "^8",
     "prettier": "^3.3.3",
     "sass": "^1.78.0",
