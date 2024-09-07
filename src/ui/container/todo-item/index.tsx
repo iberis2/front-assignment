@@ -9,7 +9,7 @@ import { UpdateDialog } from '../create-update-dialog';
 import S from './styles.module.scss';
 import { TodoItemViewProps } from './types';
 import { TodoResponse } from '@/src/remotes/todo/types';
-import { useDeleteTodo } from '@/src/remotes/todo/mutation';
+import { useDeleteTodo, useUpdateTodo } from '@/src/remotes/todo/mutation';
 import { useQueryClient } from '@tanstack/react-query';
 import { QUERY_KEYS } from '@/src/remotes/query-keys';
 import { toast } from 'react-toastify';
@@ -19,6 +19,7 @@ export default function TodoItem(todoItemProps: TodoResponse) {
   const updateDialog = useBoolean(false);
   const deleteDialog = useBoolean(false);
   const { mutateAsync: deleteTodo, isPending } = useDeleteTodo(todoItemProps.id);
+  const { mutateAsync: updateTodo } = useUpdateTodo(todoItemProps.id);
 
   const handleDeleteTodo = async () => {
     try {
@@ -28,6 +29,14 @@ export default function TodoItem(todoItemProps: TodoResponse) {
       toast.error('삭제에 실패했습니다.');
     }
     deleteDialog.onFalse();
+  };
+
+  const handleUpdateTodo = async (completed: boolean) => {
+    try {
+      await updateTodo({ completed });
+    } catch (e) {
+      toast.error('변경에 실패했습니다.');
+    }
   };
 
   const props = {
@@ -44,6 +53,7 @@ export default function TodoItem(todoItemProps: TodoResponse) {
       onOpen: deleteDialog.onTrue,
       isLoading: isPending,
     },
+    handleUpdateTodo,
   };
 
   return <TodoItemView {...props} />;
@@ -56,13 +66,18 @@ function TodoItemView({
   completed,
   updateDialog,
   deleteDialog,
+  handleUpdateTodo,
 }: TodoItemViewProps) {
   return (
     <>
       <div className={S.container}>
         <Flex justify='space-between'>
           <label className={S.label}>
-            <input type='checkbox' defaultChecked={completed} />
+            <input
+              type='checkbox'
+              defaultChecked={completed}
+              onChange={e => handleUpdateTodo(e.target.checked)}
+            />
             <Text typo='h3'>{title}</Text>
           </label>
           <div>

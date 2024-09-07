@@ -14,4 +14,5 @@ export interface TodoItemViewProps extends TodoResponse {
     onOpen: () => void;
     isLoading?: boolean;
   };
+  handleUpdateTodo: (completed: boolean) => Promise<void>;
 }
