@@ -5,7 +5,7 @@ import Button from '../../component/button';
 import Flex from '../../component/flex';
 import Text from '../../component/text';
 import ConfirmDialog from '../confirm-dialog';
-import CreateUpdateDialogView from '../create-update-dialog';
+import { UpdateDialog } from '../create-update-dialog';
 import S from './styles.module.scss';
 import { TodoItemProps, TodoItemViewProps } from './types';
 
@@ -81,7 +81,7 @@ function TodoItemView({
         <div className={S.divider} />
         <Text typo='b1'>{content}</Text>
       </div>
-      <CreateUpdateDialogView title='할일 수정' {...updateDialog} />
+      <UpdateDialog id={'1'} title='할일 수정' {...updateDialog} />
       <ConfirmDialog title='변경사항이 있습니다. 수정을 취소할까요?' {...confirmDialog} />
       <ConfirmDialog title='todo를 삭제하시겠습니까?' {...deleteDialog} />
     </>

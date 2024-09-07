@@ -5,7 +5,7 @@ import Button from '@/src/ui/component/button';
 import Text from '@/src/ui/component/text';
 
 import Flex from '../../component/flex';
-import CreateUpdateDialogView from '../../container/create-update-dialog';
+import { CreateDialog } from '../../container/create-update-dialog';
 import TodoItem from '../../container/todo-item';
 import S from './styles.module.scss';
 import { GetTodoListResponse } from '@/src/remotes/todo/types';
@@ -25,11 +25,7 @@ export default function TodoList({ todoList }: Props) {
       </Button>
       {todoList?.map(todo => <TodoItem key={todo?.id} {...todo} />)}
 
-      <CreateUpdateDialogView
-        open={createDialog.value}
-        onClose={createDialog.onFalse}
-        title='할일 추가'
-      />
+      <CreateDialog open={createDialog.value} onClose={createDialog.onFalse} title='할일 추가' />
     </Flex>
   );
 }
