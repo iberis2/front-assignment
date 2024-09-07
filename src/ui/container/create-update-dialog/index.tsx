@@ -59,7 +59,8 @@ export function UpdateDialog({ id, todo, ...dialogProps }: Props & { id: string 
 
   const handleCloseUpdateDialog = () => {
     dialogProps.onClose();
-    if (methods.formState.isDirty) {
+    const isDirty = methods.formState.isDirty;
+    if (isDirty) {
       confirmDialog.onTrue();
     } else {
       dialogProps.onClose();

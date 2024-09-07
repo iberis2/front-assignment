@@ -97,7 +97,8 @@ function TodoDetailView({
   };
 
   const handleCancelUpdate = () => {
-    if (methods.formState.isDirty) {
+    const isDirty = methods.formState.isDirty;
+    if (isDirty) {
       confirmDialog.onTrue();
       return;
     }
