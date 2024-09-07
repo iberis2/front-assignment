@@ -7,9 +7,10 @@ interface Props {
   open: boolean;
   onConfirm: () => void;
   onClose: () => void;
+  isLoading?: boolean;
 }
 
-export default function ConfirmDialog({ title, open, onConfirm, onClose }: Props) {
+export default function ConfirmDialog({ title, open, onConfirm, onClose, isLoading }: Props) {
   return (
     <Dialog open={open} onClose={onClose}>
       <Dialog.Content>
@@ -21,7 +22,7 @@ export default function ConfirmDialog({ title, open, onConfirm, onClose }: Props
         <Button size='m' onClick={onClose}>
           취소
         </Button>
-        <Button size='m' color='error' onClick={onConfirm}>
+        <Button size='m' color='error' isLoading={isLoading} onClick={onConfirm}>
           확인
         </Button>
       </Dialog.Footer>

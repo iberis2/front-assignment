@@ -17,13 +17,13 @@ export default function TodoItem(todoItemProps: TodoResponse) {
   const query = useQueryClient();
   const updateDialog = useBoolean(false);
   const deleteDialog = useBoolean(false);
-  const { mutateAsync: deleteTodo } = useDeleteTodo(todoItemProps.id);
+  const { mutateAsync: deleteTodo, isPending } = useDeleteTodo(todoItemProps.id);
 
   const handleDeleteTodo = async () => {
     await deleteTodo();
     deleteDialog.onFalse();
     query.invalidateQueries({ queryKey: QUERY_KEYS.todoList });
-  }
+  };
 
   const props = {
     ...todoItemProps,
@@ -37,7 +37,8 @@ export default function TodoItem(todoItemProps: TodoResponse) {
       onClose: deleteDialog.onFalse,
       onConfirm: handleDeleteTodo,
       onOpen: deleteDialog.onTrue,
-    }
+      isLoading: isPending,
+    },
   };
 
   return <TodoItemView {...props} />;

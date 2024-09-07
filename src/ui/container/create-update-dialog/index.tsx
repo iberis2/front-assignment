@@ -25,7 +25,7 @@ interface Props {
 
 export function CreateDialog(dialogProps: Props) {
   const query = useQueryClient();
-  const { mutateAsync: createTodo } = useCreateTodo();
+  const { mutateAsync: createTodo, isPending } = useCreateTodo();
   const methods = useForm<FormType>();
 
   const handleCreateTodo: SubmitHandler<FormType> = async newTodo => {
@@ -35,12 +35,19 @@ export function CreateDialog(dialogProps: Props) {
     query.invalidateQueries({ queryKey: QUERY_KEYS.todoList });
   };
 
-  return <CreateUpdateDialogView methods={methods} onConfirm={handleCreateTodo} {...dialogProps} />;
+  return (
+    <CreateUpdateDialogView
+      methods={methods}
+      onConfirm={handleCreateTodo}
+      isLoading={isPending}
+      {...dialogProps}
+    />
+  );
 }
 export function UpdateDialog({ id, todo, ...dialogProps }: Props & { id: string }) {
   const query = useQueryClient();
   const confirmDialog = useBoolean(false);
-  const { mutateAsync: updateTodo } = useUpdateTodo(id);
+  const { mutateAsync: updateTodo, isPending } = useUpdateTodo(id);
   const methods = useForm<FormType>({
     defaultValues: { title: todo?.title, content: todo?.content },
   });
@@ -77,6 +84,7 @@ export function UpdateDialog({ id, todo, ...dialogProps }: Props & { id: string 
         onConfirm={handleUpdateTodo}
         {...dialogProps}
         onClose={handleCloseUpdateDialog}
+        isLoading={isPending}
       />
       <ConfirmDialog
         title='변경사항이 있습니다. 수정을 취소할까요?'
@@ -94,7 +102,8 @@ function CreateUpdateDialogView({
   onClose,
   onConfirm,
   methods,
-}: Props & { methods: UseFormReturn<FormType, any, undefined> }) {
+  isLoading,
+}: Props & { methods: UseFormReturn<FormType, any, undefined>; isLoading?: boolean }) {
   return (
     <Dialog open={open} onClose={onClose}>
       <FormProvider methods={methods} onSubmit={onConfirm}>
@@ -113,7 +122,7 @@ function CreateUpdateDialogView({
           <Button size='m' color='error' type='button' onClick={onClose}>
             취소
           </Button>
-          <Button size='m' type='submit'>
+          <Button size='m' type='submit' isLoading={isLoading}>
             확인
           </Button>
         </Dialog.Footer>
