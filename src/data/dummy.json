@@ -1,0 +1,22 @@
+{
+  "todo_list": [
+    {
+      "id": 1,
+      "title": "Learn React",
+      "content": "React is a JavaScript library for building user interfaces.",
+      "completed": false
+    },
+    {
+      "id": 2,
+      "title": "Learn Next.js",
+      "content": "Next.js is a React framework for production.",
+      "completed": false
+    },
+    {
+      "id": 3,
+      "title": "Learn TypeScript",
+      "content": "TypeScript is a superset of JavaScript that adds type annotations.",
+      "completed": false
+    }
+  ]
+}

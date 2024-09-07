@@ -9,7 +9,8 @@
     "format": "prettier --cache --write .",
     "lint": "next lint --cache",
     "tsc": "tsc -p tsconfig.json --noEmit",
-    "prepare": "husky"
+    "prepare": "husky",
+    "server": "json-server --watch ./src/data/dummy.json --port 8080"
   },
   "dependencies": {
     "next": "14.2.8",
@@ -31,6 +32,7 @@
     "eslint-plugin-react": "^7.35.2",
     "eslint-plugin-simple-import-sort": "^12.1.1",
     "husky": "^9.1.5",
+    "json-server": "^1.0.0-beta.2",
     "postcss": "^8",
     "prettier": "^3.3.3",
     "react-hook-form": "^7.53.0",
