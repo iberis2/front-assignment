@@ -8,10 +8,13 @@ import Flex from '../../component/flex';
 import CreateUpdateDialogView from '../../container/create-update-dialog';
 import TodoItem from '../../container/todo-item';
 import S from './styles.module.scss';
-import { useGetTodoList } from '@/src/remotes/todo/quries';
+import { GetTodoListResponse } from '@/src/remotes/todo/types';
 
-export default function TodoList() {
-  const { data: todoList = [] } = useGetTodoList();
+type Props = {
+  todoList: GetTodoListResponse;
+};
+
+export default function TodoList({ todoList }: Props) {
   const createDialog = useBoolean(false);
 
   return (

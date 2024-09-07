@@ -1,5 +1,8 @@
+import { getTodoList } from '@/src/remotes/todo/url';
 import TodoList from '@/src/ui/page/todo-list';
 
-export default function TodoListPage() {
-  return <TodoList />;
+export default async function TodoListPage() {
+  const todoList = await getTodoList();
+
+  return <TodoList todoList={todoList ?? []} />;
 }
