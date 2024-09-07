@@ -1,0 +1,11 @@
+@use '../../../../styles/colors' as c;
+
+.container {
+  padding: 24px;
+}
+
+.button {
+  &-create {
+    align-self: flex-end;
+  }
+}
