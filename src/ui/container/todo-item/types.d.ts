@@ -5,12 +5,12 @@ export interface TodoItemViewProps extends TodoResponse {
     open: boolean;
     onClose: () => void;
     onOpen: () => void;
+    onOpen: () => void;
   };
   deleteDialog: {
     open: boolean;
     onClose: () => void;
     onConfirm: () => void;
+    onOpen: () => void;
   };
-  handleOpenUpdateDialog: () => void;
-  handleOpenDeleteDialog: () => void;
 }

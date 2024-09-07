@@ -9,10 +9,21 @@ import { UpdateDialog } from '../create-update-dialog';
 import S from './styles.module.scss';
 import { TodoItemViewProps } from './types';
 import { TodoResponse } from '@/src/remotes/todo/types';
+import { useDeleteTodo } from '@/src/remotes/todo/mutation';
+import { useQueryClient } from '@tanstack/react-query';
+import { QUERY_KEYS } from '@/src/remotes/query-keys';
 
 export default function TodoItem(todoItemProps: TodoResponse) {
+  const query = useQueryClient();
   const updateDialog = useBoolean(false);
   const deleteDialog = useBoolean(false);
+  const { mutateAsync: deleteTodo } = useDeleteTodo(todoItemProps.id);
+
+  const handleDeleteTodo = async () => {
+    await deleteTodo();
+    deleteDialog.onFalse();
+    query.invalidateQueries({ queryKey: QUERY_KEYS.todoList });
+  }
 
   const props = {
     ...todoItemProps,
@@ -24,10 +35,9 @@ export default function TodoItem(todoItemProps: TodoResponse) {
     deleteDialog: {
       open: deleteDialog.value,
       onClose: deleteDialog.onFalse,
-      onConfirm: deleteDialog.onFalse,
-    },
-    handleOpenUpdateDialog: updateDialog.onTrue,
-    handleOpenDeleteDialog: deleteDialog.onTrue,
+      onConfirm: handleDeleteTodo,
+      onOpen: deleteDialog.onTrue,
+    }
   };
 
   return <TodoItemView {...props} />;
@@ -40,7 +50,6 @@ function TodoItemView({
   completed,
   updateDialog,
   deleteDialog,
-  ...props
 }: TodoItemViewProps) {
   return (
     <>
@@ -51,10 +60,10 @@ function TodoItemView({
             <Text typo='h3'>{title}</Text>
           </label>
           <div>
-            <Button onClick={props.handleOpenUpdateDialog} size='s' color='default'>
+            <Button onClick={updateDialog.onOpen} size='s' color='default'>
               수정하기
             </Button>
-            <Button onClick={props.handleOpenDeleteDialog} size='s' color='error'>
+            <Button onClick={deleteDialog.onOpen} size='s' color='error'>
               삭제하기
             </Button>
           </div>
@@ -63,7 +72,7 @@ function TodoItemView({
         <Text typo='b1'>{content}</Text>
       </div>
       <UpdateDialog id={id} title='할일 수정' todo={{ title, content }} {...updateDialog} />
-      <ConfirmDialog title='todo를 삭제하시겠습니까?' {...deleteDialog} />
+      <ConfirmDialog title={`${title}를 삭제하시겠습니까?`} {...deleteDialog} />
     </>
   );
 }
