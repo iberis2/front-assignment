@@ -1,81 +1,80 @@
-# 프론트엔드 개발자 채용 과제
-### 안녕하세요, 지원자님!
+# Todo list
 
-에이티앤피파트너즈 비스킷팀의 서류 전형을 통과하신 것을 진심으로 축하드립니다. 
-아래의 내용에 과제를 진행해 주시기 바랍니다.
+이 프로젝트는 Next.js와 React를 기반으로 한 Todo 애플리케이션입니다. \
+프로젝트는 TypeScript로 작성되었으며, 상태 관리를 위해 @tanstack/react-query를 사용하고 있습니다. \
+json-server를 사용하여 간단한 백엔드 API 서버도 제공합니다.
 
-## 1. 과제 내용
- - Todo List 구현
+## Table of Contents
 
-## 2. 기술 요구사항
-  - **필수 기술 스택**은 `Next.js ^14 (App router)`, `Typescript`, `module scss` 입니다.
-  - 추가적으로 필요한 패키지가 있다면 사용해도 좋습니다.
+- [요구사항 및 실행 방법](#요구사항_및_실행_방법)
+- [스크립트](#스크립트)
+- [사용 기술 스택](#사용_기술_스택)
+- [구현 사항](#구현_사항)
 
-## 3. 공통 요구사항 
-- [`json-server`](https://github.com/typicode/json-server)를 사용하여 가상의 백앤드 환경을 구축합니다.
-- 모든 API 요청에 대해 `loading`, `error` 처리를 구현해야 합니다.
-- 반응형 디자인 구현 (모바일, 데스크탑)
-- Server Side fetching, Server action을 적극적으로 활용해주시고, 필요에 따라 Client side fetcing을 사용해도 좋습니다.
-  
-## 4. 페이지 및 세부 구현사항
-### 페이지 
-1. `/todo-list`
-    <br />
-  ![image](https://github.com/user-attachments/assets/04e5c78e-6ca5-4a0b-847f-dc39c90e68e3)
+## 요구사항 및 실행 방법
 
-  - 기능 
-    - Todo 생성 하기
-       - Todo는 본문과 제목, 완료여부로 구성되어 있습니다.
-       - Todo 생성 폼은 `dialog`로 표시합니다.
-    - Todo 삭제 하기
-      - 삭제 여부를 `alert-dialog` 를 통해 재확인하고 `yes` 일 때 삭제됩니다.
-    - Todo 수정 하기
-      - 제목과 본문을 수정 할 수 있습니다.
-      - 수정 폼은 `dialog`로 표시합니다.
-      - 기존 내용에서 변동이 있는 상태에서, `dialog`를 닫으려고 할때  `alert-dialog`를 통해 재확인합니다.
-    - Todo 완료여부 변경
-      - 체크박스 클릭을 통해 `Todo`의 완료여부를 변경 합니다.
-  1. `/todo-list/{id}`
-      <br />
-      ![image](https://github.com/user-attachments/assets/a4e453f5-1df7-4a14-a3d1-452677425ef3)
-      ![image](https://github.com/user-attachments/assets/f59ffff0-e46b-4d77-8720-84884822bc56)
+### 요구 사항
 
+- Node.js (최소 버전: 16.0.0)
+- Yarn (패키지 매니저)
 
-  - 기능
-      - Todo 수정하기
-        - 상세 페이지는 수정모드와 읽기모드로 전환이 가능합니다.
-        - 수정모드에서는 제목과 본문이 `form 형태`로 전환됩니다.
-        - 기존 내용에서 변동이 있는 상태에서, `수정 모드`를 닫으려고 할때  `alert-dialog`를 통해 재확인합니다.
-      - Todo 삭제하기
-        - 삭제 여부를 `alert-dialog`를 통해서 재확인하고, 삭제 성공 시 `/todo-list` 페이지로 이동합니다.
-  
-### 컴포넌트 구현 사항
-  - `추가`, `수정`, `삭제` 등에서 사용 할 `Button`을 구현해주세요. 
-    - 2개의 테마를 가집니다 `primary, dangerous`
-    - 3개의 사이즈를 가집니다. 
-  - Todo의 완료여부에서 사용할 커스텀 `Checkbox` 컴포넌트를 직접 구현해주세요.
-  - `dialog`와 `alert-dialog` 는 직접 구현하거나 또는 [`radix`](https://www.radix-ui.com/primitives/docs/overview/introduction)를 사용하세요.
+### 설치 방법
 
+```bash
+# 저장소를 클론합니다
+git clone <repository-url>
+cd todo
 
-## 5. 참고 사항
-  - 디자인은 자유이며, 평가요소에 포함되지 않습니다. (레퍼런스를 참고해도 무방합니다.)
-  - 필수 기능 외, 추가적으로 적용하고 싶은 기능이 있다면 구현해도 좋습니다.
-  
-## 6. 제출 방법
-- **제출 기한**: **수신한날로부터 2일 까지**
-  - e.g. *8월 20일에 수신한 경우 8월 22일 11:59 까지 제출*
-- **제출 방식**: Fork 하여 링크를 아래의 메일로 전송해주세요.
+# dependency 를 설치합니다.
+yarn install
+```
 
-## 7. 문의 사항
+### 실행 방법
 
-과제를 수행하면서 문의 사항이 있을 경우, 아래의 메일로 언제든지 연락주세요!
+```bash
+# jason server 실행
+yarn run server
 
-- **담당자 이름**: 예상기 팀장
-- **이메일**: sk.ye@atnp.co.kr
+# 개발 모드 애플리케이션 실행
+yarn run dev
+```
 
----
+## 스크립트
 
-이 README 파일은 채용 과제를 수행하는 데 필요한 정보를 체계적으로 전달하기 위한 문서입니다. 과제를 진행하면서 도움이 되기를 바라며, 최선을 다해 좋은 결과물을 만들어주시기를 기대합니다.
+```json
+  "dev": "next dev",
+  "build": "next build",
+  "start": "next start",
+  "format": "prettier --cache --write .",
+  "lint": "next lint --cache",
+  "tsc": "tsc -p tsconfig.json --noEmit",
+  "prepare": "husky",
+  "server": "json-server --watch ./src/data/dummy.json --port 8080"
+```
 
-감사합니다.  
-에이티앤피파트너즈 비스킷팀 드림
+## 사용 기술 스택
+
+- Next js
+- Typescript
+- Tanstack Query
+- Scss
+- json server
+
+## 구현 사항
+
+| 구현 사항                          | 이미지                                                            | 설명                                                                                                          |
+| ---------------------------------- | ----------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------- |
+| 반응형 디자인                      | ![](https://ifh.cc/g/ggGmog.jpg) ![](https://ifh.cc/g/vFfqKY.png) | /todo-list, /todo-list/:id 페이지에 각 데스크탑, 모바일 버전의 반응형 디자인이 적용되어 있습니다.             |
+| loading                            | ![](https://ifh.cc/g/OqvgA7.png)                                  | 할 일 추가, 수정, 삭제 시 pending 상태 동안 loading spinner 가 적용되어 있습니다.                             |
+| error                              | ![](https://ifh.cc/g/lG0lDa.jpg)                                  | api 요청 실패 시 toast 가 적용되어 있습니다.                                                                  |
+| 업데이트 취소에 대한 변동사항 체크 | ![](https://ifh.cc/g/k3Nnrk.png) ![](https://ifh.cc/g/ck2pO8.png) | 업데이트 취소 시, 변동사항이 없는 경우 바로 취소되며, 변동사항이 있는 경우 alert-dialog 를 통해 재확인 합니다 |
+
+### Button 컴포넌트
+
+- `success`, `info` , `error` , `default` , `disabled` 색상을 가집니다.
+- `s`, `m`, `l` 사이즈를 가집니다.
+- disabled 된 상태로 로딩 스피너 ui 를 가지는 `isLoading` 상태를 가집니다.
+
+### Dialog 컴포넌트
+
+- radix ui 를 참고하여 react portal 을 사용하여 컴파운드 컴포넌트 형태로 구현하였습니다.
