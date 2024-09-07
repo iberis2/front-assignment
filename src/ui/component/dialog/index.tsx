@@ -4,7 +4,7 @@ import classNames from 'classnames';
 import { createContext, useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 
-import { DialogContent, DialogFooter, DialogTitle as DialogTitle } from './Children';
+import { DialogContent, DialogFooter, DialogTitle as DialogTitle } from './children';
 import S from './styles.module.scss';
 
 export const DialogContext = createContext<{
