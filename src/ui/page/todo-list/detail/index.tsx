@@ -12,19 +12,26 @@ import { useDeleteTodo, useUpdateTodo } from '@/src/remotes/todo/mutation';
 import { useGetTodo } from '@/src/remotes/todo/quries';
 import { useBoolean } from '@/src/hooks/useBoolean';
 import { QUERY_KEYS } from '@/src/remotes/query-keys';
-import { useRouter } from 'next/navigation';
-import { useRef, useState } from 'react';
+import { useParams, useRouter } from 'next/navigation';
+import { useForm } from 'react-hook-form';
+import FormProvider from '@/src/ui/component/hook-form/form-provider';
+import { useEffect } from 'react';
 
 type Props = {
   todo: TodoResponse;
   id: string;
 };
 
-export default function TodoDetail({ todo: initialData, id }: Props) {
+export default function TodoDetail({ id }: Props) {
   const router = useRouter();
   const query = useQueryClient();
+  const editMode = useBoolean(false);
   const deleteDialog = useBoolean(false);
   const { data: todo } = useGetTodo(id);
+  const methods = useForm<{ title: string; content: string }>({
+    defaultValues: { title: todo?.title, content: todo?.content },
+  });
+
   const { mutateAsync: deleteTodo, isPending } = useDeleteTodo(id);
   const { mutateAsync: updateTodo } = useUpdateTodo(id);
 
@@ -47,7 +54,12 @@ export default function TodoDetail({ todo: initialData, id }: Props) {
     } catch (e) {
       toast.error('변경에 실패했습니다.');
     }
+    editMode.onFalse();
   };
+
+  useEffect(() => {
+    methods.reset({ title: todo?.title, content: todo?.content });
+  }, [todo]);
 
   const props = {
     ...todo,
@@ -59,10 +71,14 @@ export default function TodoDetail({ todo: initialData, id }: Props) {
       isLoading: isPending,
     },
     handleUpdateTodo,
+    editMode,
+    methods,
   };
 
   return <TodoDetailView {...props} />;
 }
+
+// --------------------------------------------------------
 
 function TodoDetailView({
   title,
@@ -70,61 +86,108 @@ function TodoDetailView({
   completed,
   deleteDialog,
   handleUpdateTodo,
+  editMode,
+  methods,
 }: TodoDetailViewProps) {
-  const editMode = useBoolean(false);
-  const titleRef = useRef<HTMLInputElement>(null);
-  const contentRef = useRef<HTMLTextAreaElement>(null);
+  const confirmDialog = useBoolean(false);
+  const disabledSave = methods.watch('title') === '' || methods.watch('content') === '';
+  const handleUpdate = async () => {
+    const [title, content] = methods.getValues(['title', 'content']);
+    await handleUpdateTodo({ title, content });
+  };
 
-  const onUpdateTodo = async () => {
-    await handleUpdateTodo({
-      title: titleRef.current?.value,
-      content: contentRef.current?.value,
-    });
+  const handleCancelUpdate = () => {
+    if (methods.formState.isDirty) {
+      confirmDialog.onTrue();
+      return;
+    }
     editMode.onFalse();
   };
 
   return (
     <>
       <div className={S.container}>
-        <Flex justify='space-between' grow gap={8}>
-          <label className={S.label}>
-            <input
-              type='checkbox'
-              defaultChecked={completed}
-              onChange={e => handleUpdateTodo({ completed: e.target.checked })}
-            />
-            <input
-              defaultValue={title}
-              ref={titleRef}
-              readOnly={!editMode.value}
-              className={S.input}
-            />
-          </label>
-          <div>
-            {!editMode.value ? (
-              <Button onClick={editMode.onTrue} size='s' color='default' className={S.button}>
-                수정하기
-              </Button>
-            ) : (
-              <Button onClick={onUpdateTodo} size='s' color='info' className={S.button}>
-                저장하기
-              </Button>
-            )}
-            <Button onClick={deleteDialog.onOpen} size='s' color='error' className={S.button}>
-              삭제하기
-            </Button>
-          </div>
-        </Flex>
-        <div className={S.divider} />
-        <textarea
-          ref={contentRef}
-          defaultValue={content}
-          className={S['text-area']}
-          readOnly={!editMode.value}
-          rows={10}
-        />
+        <FormProvider methods={methods}>
+          <Flex justify='space-between' grow gap={8}>
+            <label className={S.label}>
+              <input
+                type='checkbox'
+                defaultChecked={completed}
+                onChange={e => handleUpdateTodo({ completed: e.target.checked })}
+              />
+              <input
+                readOnly={!editMode.value}
+                className={S.input}
+                {...methods.register('title')}
+              />
+            </label>
+            <div>
+              {!editMode.value ? (
+                <div>
+                  <Button
+                    type='button'
+                    onClick={editMode.onTrue}
+                    size='s'
+                    color='default'
+                    className={S.button}
+                  >
+                    수정하기
+                  </Button>
+                  <Button
+                    type='button'
+                    onClick={deleteDialog.onOpen}
+                    size='s'
+                    color='error'
+                    className={S.button}
+                  >
+                    삭제하기
+                  </Button>
+                </div>
+              ) : (
+                <div>
+                  <Button
+                    type='button'
+                    onClick={handleUpdate}
+                    size='s'
+                    color='info'
+                    className={S.button}
+                    disabled={disabledSave}
+                  >
+                    저장하기
+                  </Button>
+                  <Button
+                    type='button'
+                    onClick={handleCancelUpdate}
+                    size='s'
+                    color='error'
+                    className={S.button}
+                  >
+                    취소하기
+                  </Button>
+                </div>
+              )}
+            </div>
+          </Flex>
+          <div className={S.divider} />
+          <textarea
+            className={S['text-area']}
+            readOnly={!editMode.value}
+            rows={10}
+            {...methods.register('content')}
+          />
+        </FormProvider>
       </div>
       <ConfirmDialog title={`${title}를 삭제하시겠습니까?`} {...deleteDialog} />
+      <ConfirmDialog
+        title='변경사항이 있습니다. 수정을 취소할까요?'
+        open={confirmDialog.value}
+        onClose={confirmDialog.onFalse}
+        onConfirm={() => {
+          confirmDialog.onFalse();
+          editMode.onFalse();
+          methods.reset();
+        }}
+      />
     </>
   );
 }

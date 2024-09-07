@@ -1,7 +1,9 @@
+import { useBoolean } from '@/src/hooks/useBoolean';
 import { TodoResponse } from '@/src/remotes/todo/types';
+import { UseFormReturn } from 'react-hook-form';
 
 export interface TodoDetailViewProps extends Partial<TodoResponse> {
-  editMode?: boolean;
+  editMode: ReturnType<typeof useBoolean>;
   deleteDialog: {
     open: boolean;
     onClose: () => void;
@@ -10,4 +12,12 @@ export interface TodoDetailViewProps extends Partial<TodoResponse> {
     isLoading?: boolean;
   };
   handleUpdateTodo: (params: Partial<TodoResponse>) => Promise<void>;
+  methods: UseFormReturn<
+    {
+      title: string;
+      content: string;
+    },
+    any,
+    undefined
+  >;
 }

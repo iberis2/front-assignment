@@ -13,6 +13,7 @@ import { useDeleteTodo, useUpdateTodo } from '@/src/remotes/todo/mutation';
 import { useQueryClient } from '@tanstack/react-query';
 import { QUERY_KEYS } from '@/src/remotes/query-keys';
 import { toast } from 'react-toastify';
+import Link from 'next/link';
 
 export default function TodoItem(todoItemProps: TodoResponse) {
   const query = useQueryClient();
@@ -90,7 +91,9 @@ export function TodoItemView({
           </div>
         </Flex>
         <div className={S.divider} />
-        <Text typo='b1'>{content}</Text>
+        <Link href={`/todo-list/${id}`}>
+          <Text typo='b1'>{content}</Text>
+        </Link>
       </div>
       <UpdateDialog id={id} title='할일 수정' todo={{ title, content }} {...updateDialog} />
       <ConfirmDialog title={`${title}를 삭제하시겠습니까?`} {...deleteDialog} />
