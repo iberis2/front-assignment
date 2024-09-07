@@ -7,14 +7,14 @@ export const useCreateTodo = () => {
   });
 };
 
-export const useUpdateTodo = (id: number) => {
+export const useUpdateTodo = (id: string) => {
   return useMutation({
-    mutationFn: async (data: { title: string; content: string; completed: boolean }) =>
+    mutationFn: async (data: { title?: string; content?: string; completed?: boolean }) =>
       patchTodo(id, data),
   });
 };
 
-export const useDeleteTodo = (id: number) => {
+export const useDeleteTodo = (id: string) => {
   return useMutation({
     mutationFn: async () => deleteTodo(id),
   });

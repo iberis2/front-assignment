@@ -1,4 +1,4 @@
-import { GetTodoListResponse, GetTodoResponse } from './types';
+import { GetTodoListResponse, TodoResponse } from './types';
 
 export const getTodoList = async (): Promise<GetTodoListResponse | undefined> => {
   try {
@@ -11,7 +11,7 @@ export const getTodoList = async (): Promise<GetTodoListResponse | undefined> =>
   }
 };
 
-export const getTodo = async (id: number): Promise<GetTodoResponse | undefined> => {
+export const getTodo = async (id: string): Promise<TodoResponse | undefined> => {
   if (!id) {
     throw new Error('id is required');
   }
@@ -25,12 +25,15 @@ export const getTodo = async (id: number): Promise<GetTodoResponse | undefined> 
   }
 };
 
-export const postTodo = async (params: { title: string; content: string }): Promise<undefined> => {
+export const postTodo = async (params: {
+  title: string;
+  content: string;
+}): Promise<TodoResponse | undefined> => {
   try {
     const response = await fetch(`http://localhost:8080/todo_list`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(params),
+      body: JSON.stringify({ ...params, completed: false }),
     });
     const data = await response.json();
     return data;
@@ -40,8 +43,8 @@ export const postTodo = async (params: { title: string; content: string }): Prom
   }
 };
 export const patchTodo = async (
-  id: number,
-  data: { title: string; content: string; completed: boolean },
+  id: string,
+  data: { title?: string; content?: string; completed?: boolean },
 ): Promise<undefined> => {
   if (!id) {
     throw new Error('id is required');
@@ -59,7 +62,7 @@ export const patchTodo = async (
     return undefined;
   }
 };
-export const deleteTodo = async (id: number): Promise<undefined> => {
+export const deleteTodo = async (id: string): Promise<undefined> => {
   if (!id) {
     throw new Error('id is required');
   }

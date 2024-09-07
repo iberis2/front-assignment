@@ -1,8 +1,8 @@
-export interface GetTodoResponse {
-  id: number;
+export interface TodoResponse {
+  id: string;
   title: string;
   content: string;
   completed: boolean;
 }
 
-export type GetTodoListResponse = GetTodoResponse[];
+export type GetTodoListResponse = TodoResponse[];

@@ -7,11 +7,11 @@ type Props = {
 };
 
 export default async function TodoDetailPage({ params }: Props) {
-  const todo = await getTodo(Number(params.id));
+  const todo = await getTodo(params.id);
 
   if (!todo) {
     return <div>Todo not found</div>;
   }
 
-  return <TodoDetail todo={todo} />;
+  return <TodoDetail todo={todo} id={params.id} />;
 }

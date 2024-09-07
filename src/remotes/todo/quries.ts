@@ -6,6 +6,6 @@ export const useGetTodoList = () => {
   return useQuery({ queryKey: QUERY_KEYS.todoList, queryFn: getTodoList });
 };
 
-export const useGetTodo = (id: number) => {
+export const useGetTodo = (id: string) => {
   return useQuery({ queryKey: QUERY_KEYS.todo, queryFn: () => getTodo(id), enabled: Boolean(id) });
 };
