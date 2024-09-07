@@ -1,11 +1,13 @@
 import classNames from 'classnames';
 
 import S from './styles.module.scss';
+import Flex from '../flex';
 
 interface Props extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   children: React.ReactNode;
   size?: 's' | 'm' | 'l';
   color?: 'success' | 'info' | 'error' | 'default';
+  isLoading?: boolean;
 }
 
 export default function Button({
@@ -13,11 +15,23 @@ export default function Button({
   size = 's',
   color = 'default',
   className,
+  isLoading,
+  disabled,
   ...props
 }: Props) {
   return (
-    <button className={classNames(S.button, S[size], S[color], className)} {...props}>
-      {children}
+    <button
+      className={classNames(S.button, S[size], S[color], className)}
+      disabled={isLoading || disabled}
+      {...props}
+    >
+      {!isLoading ? (
+        children
+      ) : (
+        <Flex justify='center'>
+          <div className={S.spinner} />
+        </Flex>
+      )}
     </button>
   );
 }
