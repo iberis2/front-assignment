@@ -1,6 +1,5 @@
 import { getTodo } from '@/src/remotes/todo/url';
 import TodoDetail from '@/src/ui/page/todo-list/detail';
-import React from 'react';
 
 type Props = {
   params: { id: string };

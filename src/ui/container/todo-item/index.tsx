@@ -1,5 +1,12 @@
 'use client';
+import { useQueryClient } from '@tanstack/react-query';
+import Link from 'next/link';
+import { toast } from 'react-toastify';
+
 import { useBoolean } from '@/src/hooks/useBoolean';
+import { QUERY_KEYS } from '@/src/remotes/query-keys';
+import { useDeleteTodo, useUpdateTodo } from '@/src/remotes/todo/mutation';
+import { TodoResponse } from '@/src/remotes/todo/types';
 
 import Button from '../../component/button';
 import Flex from '../../component/flex';
@@ -8,12 +15,6 @@ import ConfirmDialog from '../confirm-dialog';
 import { UpdateDialog } from '../create-update-dialog';
 import S from './styles.module.scss';
 import { TodoItemViewProps } from './types';
-import { TodoResponse } from '@/src/remotes/todo/types';
-import { useDeleteTodo, useUpdateTodo } from '@/src/remotes/todo/mutation';
-import { useQueryClient } from '@tanstack/react-query';
-import { QUERY_KEYS } from '@/src/remotes/query-keys';
-import { toast } from 'react-toastify';
-import Link from 'next/link';
 
 export default function TodoItem(todoItemProps: TodoResponse) {
   const query = useQueryClient();
@@ -27,6 +28,7 @@ export default function TodoItem(todoItemProps: TodoResponse) {
       await deleteTodo();
       query.invalidateQueries({ queryKey: QUERY_KEYS.todoList });
     } catch (e) {
+      console.error(e);
       toast.error('삭제에 실패했습니다.');
     }
     deleteDialog.onFalse();
@@ -36,6 +38,7 @@ export default function TodoItem(todoItemProps: TodoResponse) {
     try {
       await updateTodo({ completed });
     } catch (e) {
+      console.error(e);
       toast.error('변경에 실패했습니다.');
     }
   };

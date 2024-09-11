@@ -1,8 +1,10 @@
-import { GetTodoListResponse } from '@/src/remotes/todo/types';
 import Link from 'next/link';
+
+import { GetTodoListResponse } from '@/src/remotes/todo/types';
+
+import Flex from '../../component/flex';
 import Text from '../../component/text';
 import S from './styles.module.scss';
-import Flex from '../../component/flex';
 
 type Props = {
   todoList: GetTodoListResponse;

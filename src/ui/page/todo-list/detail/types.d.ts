@@ -1,6 +1,7 @@
+import { UseFormReturn } from 'react-hook-form';
+
 import { useBoolean } from '@/src/hooks/useBoolean';
 import { TodoResponse } from '@/src/remotes/todo/types';
-import { UseFormReturn } from 'react-hook-form';
 
 export interface TodoDetailViewProps extends Partial<TodoResponse> {
   editMode: ReturnType<typeof useBoolean>;
@@ -17,6 +18,7 @@ export interface TodoDetailViewProps extends Partial<TodoResponse> {
       title: string;
       content: string;
     },
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     any,
     undefined
   >;

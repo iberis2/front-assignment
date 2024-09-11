@@ -1,17 +1,19 @@
 'use client';
+import { useQueryClient } from '@tanstack/react-query';
+import { SubmitHandler, useForm, UseFormReturn } from 'react-hook-form';
+import { toast } from 'react-toastify';
+
+import { useBoolean } from '@/src/hooks/useBoolean';
+import { QUERY_KEYS } from '@/src/remotes/query-keys';
+import { useCreateTodo, useUpdateTodo } from '@/src/remotes/todo/mutation';
+
 import Button from '../../component/button';
 import Dialog from '../../component/dialog';
 import Flex from '../../component/flex';
-import Text from '../../component/text';
-import S from './styles.module.scss';
-import { useCreateTodo, useUpdateTodo } from '@/src/remotes/todo/mutation';
-import { SubmitHandler, useForm, UseFormReturn } from 'react-hook-form';
 import FormProvider from '../../component/hook-form/form-provider';
-import { useQueryClient } from '@tanstack/react-query';
-import { QUERY_KEYS } from '@/src/remotes/query-keys';
+import Text from '../../component/text';
 import ConfirmDialog from '../confirm-dialog';
-import { useBoolean } from '@/src/hooks/useBoolean';
-import { toast } from 'react-toastify';
+import S from './styles.module.scss';
 
 type FormType = { title: string; content: string };
 
@@ -34,6 +36,7 @@ export function CreateDialog(dialogProps: Props) {
       await createTodo(newTodo);
       query.invalidateQueries({ queryKey: QUERY_KEYS.todoList });
     } catch (e) {
+      console.error(e);
       toast.error('생성에 실패했습니다.');
     }
     dialogProps.onClose();
@@ -82,6 +85,7 @@ export function UpdateDialog({ id, todo, ...dialogProps }: Props & { id: string 
       await updateTodo(newTodo);
       query.invalidateQueries({ queryKey: QUERY_KEYS.todoList });
     } catch (e) {
+      console.error(e);
       toast.error('수정에 실패했습니다.');
     }
     dialogProps.onClose();
@@ -113,6 +117,7 @@ function CreateUpdateDialogView({
   onConfirm,
   methods,
   isLoading,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
 }: Props & { methods: UseFormReturn<FormType, any, undefined>; isLoading?: boolean }) {
   const disabledConfirm = methods.watch('title') === '' || methods.watch('content') === '';
 

@@ -1,7 +1,8 @@
 import { useQuery } from '@tanstack/react-query';
+
 import { QUERY_KEYS } from '../query-keys';
-import { getTodo, getTodoList } from './url';
 import { TodoResponse } from './types';
+import { getTodo, getTodoList } from './url';
 
 export const useGetTodoList = () => {
   return useQuery({ queryKey: QUERY_KEYS.todoList, queryFn: getTodoList });

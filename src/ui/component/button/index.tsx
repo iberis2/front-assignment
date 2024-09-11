@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 
-import S from './styles.module.scss';
 import Flex from '../flex';
+import S from './styles.module.scss';
 
 interface Props extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   children: React.ReactNode;

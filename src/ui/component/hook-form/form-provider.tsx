@@ -1,5 +1,6 @@
-import { UseFormReturn, FormProvider as Form, SubmitHandler } from 'react-hook-form';
+import { FormProvider as Form, SubmitHandler, UseFormReturn } from 'react-hook-form';
 
+/* eslint-disable @typescript-eslint/no-explicit-any*/
 type Props = {
   children: React.ReactNode;
   methods: UseFormReturn<any>;

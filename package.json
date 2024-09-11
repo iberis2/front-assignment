@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "format": "prettier --cache --write .",
-    "lint": "next lint --cache",
+    "lint": "next lint --fix",
     "tsc": "tsc -p tsconfig.json --noEmit",
     "prepare": "husky",
     "server": "json-server --watch ./src/data/dummy.json --port 8080"

@@ -1,21 +1,23 @@
 'use client';
 
+import { useQueryClient } from '@tanstack/react-query';
+import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
+import { useForm } from 'react-hook-form';
+import { toast } from 'react-toastify';
+
+import { useBoolean } from '@/src/hooks/useBoolean';
+import { QUERY_KEYS } from '@/src/remotes/query-keys';
+import { useDeleteTodo, useUpdateTodo } from '@/src/remotes/todo/mutation';
+import { useGetTodo } from '@/src/remotes/todo/quries';
 import { TodoResponse } from '@/src/remotes/todo/types';
 import Button from '@/src/ui/component/button';
 import Flex from '@/src/ui/component/flex';
-import { toast } from 'react-toastify';
-import S from './styles.module.scss';
-import ConfirmDialog from '@/src/ui/container/confirm-dialog';
-import { TodoDetailViewProps } from './types';
-import { useQueryClient } from '@tanstack/react-query';
-import { useDeleteTodo, useUpdateTodo } from '@/src/remotes/todo/mutation';
-import { useGetTodo } from '@/src/remotes/todo/quries';
-import { useBoolean } from '@/src/hooks/useBoolean';
-import { QUERY_KEYS } from '@/src/remotes/query-keys';
-import { useParams, useRouter } from 'next/navigation';
-import { useForm } from 'react-hook-form';
 import FormProvider from '@/src/ui/component/hook-form/form-provider';
-import { useEffect } from 'react';
+import ConfirmDialog from '@/src/ui/container/confirm-dialog';
+
+import S from './styles.module.scss';
+import { TodoDetailViewProps } from './types';
 
 type Props = {
   todo: TodoResponse;
@@ -41,6 +43,7 @@ export default function TodoDetail({ id }: Props) {
       query.invalidateQueries({ queryKey: QUERY_KEYS.todoList });
       router.push('/todo-list');
     } catch (e) {
+      console.error(e);
       toast.error('삭제에 실패했습니다.');
     }
     deleteDialog.onFalse();
@@ -52,6 +55,7 @@ export default function TodoDetail({ id }: Props) {
       query.invalidateQueries({ queryKey: QUERY_KEYS.todoList });
       query.invalidateQueries({ queryKey: QUERY_KEYS.todo });
     } catch (e) {
+      console.error(e);
       toast.error('변경에 실패했습니다.');
     }
     editMode.onFalse();
@@ -59,7 +63,7 @@ export default function TodoDetail({ id }: Props) {
 
   useEffect(() => {
     methods.reset({ title: todo?.title, content: todo?.content });
-  }, [todo]);
+  }, [todo?.title, todo?.content, methods]);
 
   const props = {
     ...todo,
@@ -82,7 +86,6 @@ export default function TodoDetail({ id }: Props) {
 
 function TodoDetailView({
   title,
-  content,
   completed,
   deleteDialog,
   handleUpdateTodo,

@@ -1,10 +1,12 @@
-import QueryClientProvider from '@/src/remotes/QueryClientProvider';
 import '../styles/globals.scss';
 import 'react-toastify/dist/ReactToastify.css';
-import S from './styles.module.scss';
 
 import type { Metadata } from 'next';
 import { ToastContainer } from 'react-toastify';
+
+import QueryClientProvider from '@/src/remotes/QueryClientProvider';
+
+import S from './styles.module.scss';
 
 export const metadata: Metadata = {
   title: 'iberis TODO List',

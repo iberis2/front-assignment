@@ -1,6 +1,7 @@
 'use client';
 
 import { useBoolean } from '@/src/hooks/useBoolean';
+import { useGetTodoList } from '@/src/remotes/todo/quries';
 import Button from '@/src/ui/component/button';
 import Text from '@/src/ui/component/text';
 
@@ -8,7 +9,6 @@ import Flex from '../../component/flex';
 import { CreateDialog } from '../../container/create-update-dialog';
 import TodoItem from '../../container/todo-item';
 import S from './styles.module.scss';
-import { useGetTodoList } from '@/src/remotes/todo/quries';
 
 export default function TodoList() {
   const { data: todoList } = useGetTodoList();
